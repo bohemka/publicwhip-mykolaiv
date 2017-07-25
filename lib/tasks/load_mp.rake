@@ -1,5 +1,5 @@
 require 'open-uri'
-
+require 'uri'
 namespace :load_mp do
   desc "Load mp https://scrapermykolaivdeputy.herokuapp.com/"
   task :all => :environment do
@@ -10,10 +10,9 @@ namespace :load_mp do
   end
   desc "Load picture image deputy"
   task :image => :environment do
-    mps = JSON.load(open('https://scrapermykolaivdeputy.herokuapp.com/'))
+    mps = JSON.load(open(('https://scrapermykolaivdeputy.herokuapp.com/')))
     mps.each do |m|
-      p m["photo_url"]
-      photo = MiniMagick::Image.open(URI.encode(m["photo_url"]))
+      photo = MiniMagick::Image.open(URI.escape(m["photo_url"]))
       photo.resize "200x200"
       photo.format 'png'
       photo.write("#{Rails.root}/public/image/#{m["deputy_id"]}.png")
