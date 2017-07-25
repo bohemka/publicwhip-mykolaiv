@@ -15,7 +15,6 @@ namespace :load_division do
             result: d[0]["option"]
         )
         division.votes.destroy_all
-        Mp.all.each do |mp|
           votes_mp = []
           p "Adeded deputy voted"
           d[1]["votes"].each do |r|
@@ -26,7 +25,6 @@ namespace :load_division do
           Mp.where.not(deputy_id: votes_mp ).each do |m|
             division.votes.create(deputy_id: m.deputy_id, vote: "absent")
           end
-        end
       end
     end
   end
