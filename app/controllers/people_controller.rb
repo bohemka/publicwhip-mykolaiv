@@ -103,7 +103,7 @@ class PeopleController < ApplicationController
     end
   end
   def get_divisions(deputy_id, faction)
-    division = Division.includes(:division_info).joins(:votes, :whips).where('votes.deputy_id =? and whips.party=?', deputy_id, faction ).order(date: :desc, id: :desc).references(:division_info)
+    division = Division.includes(:division_info).joins(:votes, :whips).where.not(date: nil).where('votes.deputy_id =? and whips.party=?', deputy_id, faction ).order(date: :desc, id: :desc).references(:division_info)
     if params[:month] != "full"
     division = division.where("date >= ? AND date < ?", Date.strptime(params[:month], '%Y-%m'), Date.strptime(params[:month], '%Y-%m') + 1.month)
     end

@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'uri'
+require 'addressable/uri'
 namespace :load_mp do
   desc "Load mp https://scrapermykolaivdeputy.herokuapp.com/"
   task :all => :environment do
@@ -12,13 +13,17 @@ namespace :load_mp do
   task :image => :environment do
     mps = JSON.load(open(('https://scrapermykolaivdeputy.herokuapp.com/')))
     mps.each do |m|
-      encoded_url = URI.encode(m["photo_url"])
-      res = Net::HTTP.get_response(URI.parse(encoded_url))
-      next if res.code == "404"
-      photo = MiniMagick::Image.open(URI.escape(m["photo_url"]))
-      photo.resize "200x200"
-      photo.format 'png'
-      photo.write("#{Rails.root}/public/image/#{m["deputy_id"]}.png")
+      #encoded_url = URI.encode(m["photo_url"].gsub(/https:\/\//, ''))
+      # res = Net::HTTP.get_response(URI.parse(encode))
+      # next if res.code == "404"
+
+      p  m["photo_url"].gsub('%20', ' ') + "  -   " + "#{m["deputy_id"]}"
+
+      # uri = Addressable::URI.parse(p)
+      # photo = MiniMagick::Image.open(uri)
+      # photo.resize "200x200"
+      # photo.format 'png'
+      # photo.write("#{Rails.root}/public/image/#{m["deputy_id"]}.png")
     end
   end
 end
