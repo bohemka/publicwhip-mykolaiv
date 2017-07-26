@@ -2,7 +2,7 @@ namespace :deputi_cashe do
   desc "Update mp cashe"
   task mp_month: :environment do
     @mp = Mp.all
-    Division.all.to_a.group_by{|d| d.date.strftime("%Y-%m")}.each do |d|
+    Division.where.not(date: nil).to_a.group_by{|d| d.date.strftime("%Y-%m")}.each do |d|
       date = d[0]
       vote_id =  d[1].map{|v| v.id }
       @mp.each do |m|
@@ -45,7 +45,7 @@ namespace :deputi_cashe do
   end
   desc "Update mp friend cashe"
   task friends_month: :environment do
-    Division.all.to_a.group_by{|d| d.date.strftime("%Y-%m")}.each do |d|
+    Division.where.not(date: nil).to_a.group_by{|d| d.date.strftime("%Y-%m")}.each do |d|
       date = d[0]
       vote_id =  d[1].map{|v| v.id }
       Mp.all.find_each do |m1|

@@ -7,11 +7,13 @@ namespace :load_division do
     date_votes.each do |date|
       divisions = JSON.load(open("http://mykolaivvoted.oporaua.org/votes_events/#{date}"))
       divisions.each do |d|
+        date_day = d[0]["date_vote"].nil? ? "" :  DateTime.parse(d[0]["date_vote"]).strftime("%F")
+        clok_time = d[0]["date_vote"].nil? ? "" : DateTime.parse(d[0]["date_vote"]).strftime("%T")
         division = Division.find_or_create_by(
-            date: DateTime.parse(d[0]["date_vote"]).strftime("%F"),
+            date: date_day,
             number: d[0]["number"],
             name: d[0]["name"],
-            clock_time: DateTime.parse(d[0]["date_vote"]).strftime("%T"),
+            clock_time: clok_time,
             result: d[0]["option"]
         )
         division.votes.destroy_all
