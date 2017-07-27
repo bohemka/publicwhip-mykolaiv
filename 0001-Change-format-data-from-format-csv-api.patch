@@ -1,0 +1,53 @@
+From e5fcf6c63bc0adf543404d67c1e7d777a02e7af9 Mon Sep 17 00:00:00 2001
+From: Beastie PC <gskondratenko@opora.org.ua>
+Date: Thu, 27 Jul 2017 16:50:09 +0300
+Subject: [PATCH 1/2] Change format data from format csv api
+
+---
+ app/controllers/api_controller.rb | 4 ++--
+ app/models/mp_info.rb             | 6 ++++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/app/controllers/api_controller.rb b/app/controllers/api_controller.rb
+index 76820e6..7704c74 100644
+--- a/app/controllers/api_controller.rb
++++ b/app/controllers/api_controller.rb
+@@ -53,7 +53,7 @@ class ApiController < ApplicationController
+     @mps = Mp.all
+     respond_to do |format|
+       format.json  {render :json => @mps.to_json(except: [:id, :created_at,  :updated_at ])}
+-      format.csv  { send_data @mps.to_csv }
++      format.csv  { send_data @mps.to_csv  }
+     end
+   end
+   def mp
+@@ -86,7 +86,7 @@ class ApiController < ApplicationController
+                                                   )
+         }
+ 
+-        format.csv  { send_data  @mp.mp_infos.mp_to_csv }
++        format.csv  { send_data  @mp.mp_infos.mp_to_csv , :filename =>  @mp.full_name + '.csv' }
+       end
+     else
+       respond_to do |format|
+diff --git a/app/models/mp_info.rb b/app/models/mp_info.rb
+index c14d029..8d94ebd 100755
+--- a/app/models/mp_info.rb
++++ b/app/models/mp_info.rb
+@@ -8,9 +8,11 @@ class MpInfo < ApplicationRecord
+   end
+   def self.mp_to_csv
+     CSV.generate do |csv|
+-      csv << column_names
++      attrib_first = %w{deputy_id}
++      attrib = %w{rebellions not_voted	absent	against	aye_voted	abstain	votes_possible	votes_attended date_mp_info}
++      csv << attrib_first + %w{full_name}  + attrib
+       all.each do |mp|
+-        csv << mp.attributes.values_at(*column_names)
++        csv << mp.attributes.values_at(*attrib_first) + [mp.mp.full_name] + mp.attributes.values_at(*attrib)
+       end
+     end
+   end
+-- 
+2.7.4
+
