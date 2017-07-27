@@ -1,6 +1,6 @@
 require 'open-uri'
 require 'uri'
-require 'addressable/uri'
+
 namespace :load_mp do
   desc "Load mp https://scrapermykolaivdeputy.herokuapp.com/"
   task :all => :environment do
