@@ -33,4 +33,4 @@
 
 [https://mykolaiv.rada4you.org/api/division.csv?division=1&filter=whips](https://mykolaiv.rada4you.org/api/division.csv?division=1&filter=whips)
 
-[https://mykolaiv.rada4you.org/api/division.csv?division=1&filter=info](https://mykolaiv.rada4you.org/api/division.csv?division=1&filter=whips)
+[https://mykolaiv.rada4you.org/api/division.csv?division=1&filter=info](https://mykolaiv.rada4you.org/api/division.csv?division=1&filter=info)
