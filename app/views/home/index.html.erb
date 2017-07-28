@@ -9,8 +9,13 @@
                               <i class="fa fa-circle fa-stack-2x"></i>
                               <i class="fa fa-search fa-stack-1x fa-inverse" aria-hidden="true"></i>
                           </span>
-        <%= text_field_tag(:mp, params[:mp] , class: "form-control mr-sm-2" , placeholder: "напр., Андрейчук Владислав Юрійович" ) %>
+        <%= text_field_tag(:mp, params[:mp] , class: "form-control mr-sm-2" , placeholder: "напр., Андрейчук Владислав Юрійович", list: "members-datalist" ) %>
         <i class="fa fa-chevron-down arrow-icon" aria-hidden="true"></i>
+        <datalist id="members-datalist">
+          <% @mps.each do |m| %>
+              <option value="<%= m %>"></option>
+          <% end %>
+        </datalist>
     <% end %>
   </div>
 </div>
@@ -55,11 +60,11 @@
   <div class="container">
     <div class="col-12"><h3 class="text-uppercase text-center background-line">Прогульники засідань</h3></div>
     <% @top_mp_rebellions.each_with_index do |mp, i| %>
-    
+
       <% if i % 2 == 0  %>
       <div class="row">
       <% end %>
-        
+
         <div class="col-6">
           <div class="col-12 card card-person ">
           <%= link_to show_people_path(mp.url_name), class: "" do %>
@@ -85,24 +90,12 @@
           </div>
           <% end %>
         </div>
-        
+
       <% if i % 2 == 1  %>
       </div>
       <% end %>
-    
+
     <% end %>
     <div class="col-12"><%= link_to  '<h4 class="text-uppercase text-center">До відвідування засідань <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></h4>'.html_safe, people_path(sort: :attendance) %></div>
   </div>
 </div>
-<script>
-    window.onload = function() {
-        var availableTags = [
-            <% @mps.each do |m| %>
-            "<%= m %>",
-            <% end %>
-        ];
-        $( "#mp" ).autocomplete({
-            source: availableTags
-        });
-    };
-</script>
